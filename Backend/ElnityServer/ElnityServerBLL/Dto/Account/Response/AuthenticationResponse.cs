@@ -2,11 +2,11 @@
 
 namespace ElnityServerBLL.Dto.Account.Response
 {
-    public class UserLoginResModel
+    public class AuthenticationResponse
     {
-        public bool IsAuthenticated { get; set; }
+        public string InfoMessages { get; set; }
 
-        public Guid UserId { get; set; }
+        public bool IsAuthenticated { get; set; }
 
         public string UserName { get; set; }
 
@@ -20,7 +20,5 @@ namespace ElnityServerBLL.Dto.Account.Response
         public string RefreshToken { get; set; }
 
         public DateTime RefreshTokenExpiration { get; set; }
-
-        public string InfoMessages { get; set; }
     }
 }

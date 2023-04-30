@@ -1,4 +1,5 @@
-﻿using ElnityServerDAL.Entities.Identity;
+﻿using ElnityServerDAL.Constant;
+using ElnityServerDAL.Entities.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,7 +12,7 @@ namespace ElnityServer.Authorization.CustomAttributes
 
         public AuthorizeAttribute()
         {
-            _roles.Add("User");
+            _roles.Add(SecuritySettings.DefaultRoleForProject);
         }
 
         public AuthorizeAttribute(string roles)
@@ -31,8 +32,19 @@ namespace ElnityServer.Authorization.CustomAttributes
                 return;
 
             var user = (ApplicationUser)context.HttpContext.Items["User"];
+            var userRoles = (List<string>)context.HttpContext.Items["Roles"];
+
             if (user == null)
+            {
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            }
+            else
+            {
+               bool userHasRole = userRoles.Any(role => _roles.Contains(role));
+               if (!userHasRole)
+                    context.Result = new JsonResult(new { message = "Forbidden" }) { StatusCode = StatusCodes.Status403Forbidden };
+            }
+
         }
     }
 }

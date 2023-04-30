@@ -6,12 +6,16 @@ using ElnityServerBLL.Tools.JwtUtilities;
 using ElnityServerDAL.Constant;
 using ElnityServerDAL.Context;
 using ElnityServerDAL.Entities.Identity;
+using ElnityServerDAL.Entities.Security;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Net;
 
 
 namespace ElnityServerBLL.Services.Implementation
 {
-    public class AccountService : IAccountService
+    public class AuthService : IAuthService
     {
         public ApplicationDbContext _aplicationDbContext { get; }
         
@@ -23,10 +27,13 @@ namespace ElnityServerBLL.Services.Implementation
 
         private readonly IJwtUtilities _jwtUtilities;
 
-        public AccountService(ApplicationDbContext aplicationDbContext, 
+        private readonly AppSettings _appSettings;
+
+        public AuthService(ApplicationDbContext aplicationDbContext, 
                               UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager, 
                               RoleManager<IdentityRole<Guid>> roleManager,
+                              IOptions<AppSettings> appSettings,
                               IJwtUtilities jwtUtilities,
                               IMapper mapper)
         {
@@ -34,11 +41,12 @@ namespace ElnityServerBLL.Services.Implementation
             _userManager = userManager;
             _jwtUtilities = jwtUtilities;
             _mapper = mapper;
+            _appSettings = appSettings.Value;
         }
 
-        public async Task<UserLoginResModel> LoginAsync(UserLoginReqModel user)
+        public async Task<AuthenticationResponse> LoginAsync(LoginRequest user, string ipAddress)
         {
-            var authenticationModel = new UserLoginResModel();
+            var authenticationModel = new AuthenticationResponse();
             var resFindUserAfterLogin = await _userManager.FindByEmailAsync(user.Email);
             if (resFindUserAfterLogin != null)
             {
@@ -48,9 +56,7 @@ namespace ElnityServerBLL.Services.Implementation
                     {
                         authenticationModel.InfoMessages = "Ok";
                         authenticationModel.IsAuthenticated = true;
-                        authenticationModel.UserId = resFindUserAfterLogin.Id;
-                        // JwtSecurityToken jwtSecurityToken = await CreateJwtToken(resFindUserAfterLogin);
-                        authenticationModel.Token = await _jwtUtilities.GenerateJwtToken(resFindUserAfterLogin); //new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                        authenticationModel.Token = await _jwtUtilities.GenerateJwtTokenAsync(resFindUserAfterLogin);
                         authenticationModel.Email = resFindUserAfterLogin.Email;
                         authenticationModel.UserName = resFindUserAfterLogin.UserName;
                         var resUserRoles = await _userManager.GetRolesAsync(resFindUserAfterLogin).ConfigureAwait(false);
@@ -64,7 +70,7 @@ namespace ElnityServerBLL.Services.Implementation
                         }
                         else
                         {
-                            var refreshToken = _jwtUtilities.GenerateRefreshToken("sd");
+                            var refreshToken = _jwtUtilities.GenerateRefreshToken(ipAddress);
                             authenticationModel.RefreshToken = refreshToken.Token;
                             authenticationModel.RefreshTokenExpiration = refreshToken.Expires;
                             resFindUserAfterLogin.RefreshTokens.Add(refreshToken);
@@ -87,7 +93,7 @@ namespace ElnityServerBLL.Services.Implementation
             return authenticationModel;
         }
 
-        public async Task<UserLoginResModel> RegisterAsync(UserRegisterReqModel user)
+        public async Task<AuthenticationResponse> RegisterAsync(RegisterRequest user)
         {
             var appUser = _mapper.Map<ApplicationUser>(user);
             var resFindUser = await _userManager.FindByNameAsync(user.UserName);
@@ -104,24 +110,83 @@ namespace ElnityServerBLL.Services.Implementation
 
                         if (resFindUserAfterRegister != null)
                         {
-                            var userResponse = _mapper.Map<UserLoginResModel>(resFindUserAfterRegister);
+                            var userResponse = _mapper.Map<AuthenticationResponse>(resFindUserAfterRegister);
                             userResponse.InfoMessages = "Ok";
                             userResponse.UserRoles = resUserRoles;
                             return userResponse;
                         }
-                        return new UserLoginResModel { InfoMessages = "User not found" };
+                        return new AuthenticationResponse { InfoMessages = "User not found" };
                     }
-                    return new UserLoginResModel { InfoMessages = "No user role added" };
+                    return new AuthenticationResponse { InfoMessages = "No user role added" };
                 }
-                return new UserLoginResModel { InfoMessages = "Create user error" };
+                return new AuthenticationResponse { InfoMessages = "Create user error" };
             }
-            return new UserLoginResModel { InfoMessages = "UserName already exist" };
+            return new AuthenticationResponse { InfoMessages = "UserName already exist" };
         }
 
+        public async Task<ShortAuthenticationResponse> RefreshTokenAsync(string token,string ipAddress)
+        {
+            var user = getUserByRefreshToken(token);
+
+            if (user == null)
+                return new ShortAuthenticationResponse
+                {
+                    IsAuthenticated = false,
+                    InfoMessages = "Invalid token"
+                };
+
+            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+
+            if (!refreshToken.IsActive)
+                return new ShortAuthenticationResponse
+                {
+                    IsAuthenticated = false,
+                    InfoMessages = "Invalid token"
+                };
+
+            revokeRefreshToken(refreshToken, ipAddress);
+
+            var newRefreshToken = _jwtUtilities.GenerateRefreshToken(ipAddress);
+            user.RefreshTokens.Add(newRefreshToken);
+            
+            removeOldRefreshTokens(user);
+
+            _aplicationDbContext.Update(user);
+            await _aplicationDbContext.SaveChangesAsync();
+
+            var jwtToken = await _jwtUtilities.GenerateJwtTokenAsync(user);
+
+            return new ShortAuthenticationResponse
+            {
+                IsAuthenticated = true,
+                InfoMessages = "Ok",
+                Token = jwtToken,
+                RefreshToken = newRefreshToken.Token,
+                RefreshTokenExpiration = newRefreshToken.Expires
+            };
+        }
+
+        public async Task RevokeTokenAsync(string token, string ipAddress)
+        {
+            var user = getUserByRefreshToken(token);
+            
+            if (user != null)
+            {
+                var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+                revokeRefreshToken(refreshToken,ipAddress);
+                _aplicationDbContext.Update(user);
+                await _aplicationDbContext.SaveChangesAsync();
+            }
+        }
 
         public async Task<ApplicationUser> GetByUserId(Guid id)
         {
             return await _userManager.FindByIdAsync(id.ToString());
+        }
+
+        public async Task<ApplicationUser> GetByUserName(string userName)
+        {
+            return await _userManager.FindByNameAsync(userName);
         }
 
         public Task Logout()
@@ -129,14 +194,29 @@ namespace ElnityServerBLL.Services.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<UserLoginResModel> RefreshTokenAsync(string token)
+        /* 
+         
+        Methods for help
+         
+        */
+
+        private ApplicationUser getUserByRefreshToken(string token)
         {
-            throw new NotImplementedException();
+            var user = _aplicationDbContext.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
+            return user;
         }
 
-        public bool RevokeToken(string token)
+        private void revokeRefreshToken(RefreshToken token,string ipAddress)
         {
-            throw new NotImplementedException();
+            token.Revoked = DateTime.UtcNow;
+            token.RevokedByIp = ipAddress;
+        }
+
+        private void removeOldRefreshTokens(ApplicationUser user)
+        { 
+            user.RefreshTokens.RemoveAll(x =>
+                !x.IsActive &&
+                x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
         }
     }
 }

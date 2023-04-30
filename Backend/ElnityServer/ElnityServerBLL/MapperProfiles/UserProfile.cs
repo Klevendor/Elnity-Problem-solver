@@ -9,8 +9,8 @@ namespace ElnityServerBLL.MapperProfiles
     {
         public UserProfile()
         {
-            CreateMap<ApplicationUser, UserLoginResModel>();
-            CreateMap<UserRegisterReqModel, ApplicationUser>().AfterMap((UserReq, AppUser) => AppUser.SecurityStamp = Guid.NewGuid().ToString());
+            CreateMap<ApplicationUser, AuthenticationResponse>();
+            CreateMap<RegisterRequest, ApplicationUser>().AfterMap((UserReq, AppUser) => AppUser.SecurityStamp = Guid.NewGuid().ToString());
         }
     }
 }

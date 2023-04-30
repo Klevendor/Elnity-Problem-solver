@@ -17,7 +17,7 @@ namespace ElnityServer.Middleware
             _appSettings = appSettings.Value;
         }
 
-        public async Task Invoke(HttpContext context, IAccountService accountService, IJwtUtilities jwtUtils)
+        public async Task Invoke(HttpContext context, IAuthService accountService, IJwtUtilities jwtUtils)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             if (token != null)

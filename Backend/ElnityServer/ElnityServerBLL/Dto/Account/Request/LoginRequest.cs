@@ -1,6 +1,6 @@
 ﻿namespace ElnityServerBLL.Dto.Account.Request
 {
-    public class UserLoginReqModel
+    public class LoginRequest
     {
         public string Email { get; set; }
 

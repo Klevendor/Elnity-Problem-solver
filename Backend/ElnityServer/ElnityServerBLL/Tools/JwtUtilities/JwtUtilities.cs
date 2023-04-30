@@ -14,7 +14,7 @@ namespace ElnityServerBLL.Tools.JwtUtilities
 {
     public interface IJwtUtilities
     {
-        public Task<string> GenerateJwtToken(ApplicationUser user);
+        public Task<string> GenerateJwtTokenAsync(ApplicationUser user);
         public Guid ValidateJwtToken(string token);
         public RefreshToken GenerateRefreshToken(string ipAddress);
     }
@@ -32,7 +32,7 @@ namespace ElnityServerBLL.Tools.JwtUtilities
             _appSettings = appSettings.Value;
         }
 
-        public async Task<string> GenerateJwtToken(ApplicationUser user)
+        public async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var roleClaims = new List<Claim>();
@@ -44,7 +44,6 @@ namespace ElnityServerBLL.Tools.JwtUtilities
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-               // new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim("guid", user.Id.ToString())
             }
             .Union(roleClaims);
@@ -58,7 +57,6 @@ namespace ElnityServerBLL.Tools.JwtUtilities
                 expires: DateTime.UtcNow.AddMinutes(_appSettings.DurationInMinutes),
                 signingCredentials: signingCredentials);
 
-            var test = 0;
             return new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
         }
 

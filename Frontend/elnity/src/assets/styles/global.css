@@ -1,3 +1,10 @@
+html, body {
+	height:100%;
+	width:100%;
+  background: url("./main-background-image2@2x.png") center;
+	background-size: cover;
+    }
+
 body {
   margin: 0;
   line-height: normal;

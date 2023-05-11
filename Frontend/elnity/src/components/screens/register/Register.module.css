@@ -1,8 +1,9 @@
-body {
+.background {
 	margin: 0;
 	background: url("public/main-background-image2@2x.png") center;
 	background-size: cover;
-
+	height: 100vh;
+	width: 100vw;
 }
 
 

@@ -50,13 +50,29 @@
     font-size: 32px;
 }
 
-.label_input {
+.label_input_email {
+    font-weight: 500;
+    font-size: 20px;
+    flex-grow: 0.1;
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+.label_input_password {
     font-weight: 500;
     font-size: 20px;
     flex-grow: 0.1;
     margin-bottom: 12px;
     margin-top: 40px;
 }
+
+.error{
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0;
+    color: red;
+}
+
 
 .input-area i {
     left: 14px;

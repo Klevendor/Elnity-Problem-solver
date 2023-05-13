@@ -16,13 +16,14 @@ const Login = () => {
                 <div className={styles.window_content}>
                     <h1 align="center" className={styles.registration_text}> Login </h1>
                     <div className={styles["fieldset-container"]}>
-                        <label className={styles.label_input}>Email</label>
+                        <p className={styles.error}>*Wrong login or password</p>
+                        <label className={styles.label_input_email}>Email</label>
                         <div className={styles["input-area"]}>
                             <i className="fa fa-lg fa-envelope"></i>
                             <input type="text" name="email" id="email" placeholder="Enter your email" autoComplete="off" />
                         </div>
 
-                        <label className={styles.label_input}>Password</label>
+                        <label className={styles.label_input_password}>Password</label>
                         <div className={styles["input-area"]}>
                             <i className="fa fa-lg fa-lock"></i>
                             <input type="password" name="verify" id="verify" placeholder="Enter password" autoComplete="off" />

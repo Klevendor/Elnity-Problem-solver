@@ -16,7 +16,8 @@ const Register = () => {
                     <div className={styles.window_content}>
                         <h1 align="center" className={styles.registration_text}> Registration </h1>
                         <div className={styles["fieldset-container"]}>
-                            <label className={styles.label_input}>Full Name</label>
+                            <p className={styles.error}>*Password must have minimum 6 symbols</p>
+                            <label className={styles.label_input_full_name}>Full Name</label>
                             <div className={styles["input-area"]}>
                                 <i className="fa fa-lg fa-user"></i>
                                 <input type="text" name="user" id="user" placeholder="Enter full name" autoComplete="off" />

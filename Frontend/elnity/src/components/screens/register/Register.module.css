@@ -47,6 +47,14 @@
 	font-size: 32px;
 }
 
+.label_input_full_name {
+	font-weight: 500;
+	font-size: 20px;
+	flex-grow: 0.1;
+	margin-bottom: 6px;
+	margin-top: 10px;
+}
+
 .label_input {
 	font-weight: 500;
 	font-size: 20px;
@@ -54,6 +62,14 @@
 	margin-bottom: 12px;
 	margin-top: 20px;
 }
+
+.error{
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0;
+    color: red;
+}
+
 
 .input-area i {
 	left: 14px;

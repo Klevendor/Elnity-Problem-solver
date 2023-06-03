@@ -1,8 +1,8 @@
-import './main.css'
+import './LandingPage.css'
 import { useRef } from 'react';
 import {useNavigate} from "react-router-dom"
 
-const Main = () => {
+const Landing = () => {
     const navigate = useNavigate();
 
     const refSector1 = useRef()
@@ -61,7 +61,7 @@ const Main = () => {
                         </div>
                     </div>
                 </div>
-                <img className="logo-icon" alt="" src="./public/logo.svg" />
+                <img className="logo-icon" alt="" src="/logo.svg" />
             </div>
             <div className="e-l-n">E l n i t y</div>
             <div className="div7"></div>
@@ -73,9 +73,9 @@ const Main = () => {
                     <div className="div10">
                         <div className="white-center-small">
                             <div className="white-center-small1">
-                                <img className="vector-icon" alt="" src="./public/vector.svg" />
+                                <img className="vector-icon" alt="" src="/vector.svg" />
                                 <div className="e-l-n1">E l n i t y</div>
-                                <img className="logo-icon1" alt="" src="./public/logo1.svg" />
+                                <img className="logo-icon1" alt="" src="/logo1.svg" />
                                 <div className="multitool-problem-solver">
                                     Multitool problem solver
                                 </div>
@@ -94,14 +94,13 @@ const Main = () => {
                     <div className="h1">
                         <div className="its-simpe">It's simpe</div>
                         <div className="and-saves-your-container">
-                            <span className="and-saves-your-container1"
-                            ><p className="and-saves-your">and saves your</p>
-                                <p className="and-saves-your">time</p></span
-                            >
+                            <span className="and-saves-your-container1">
+                                <p className="and-saves-your">and saves your</p>
+                                <p className="and-saves-your">time</p></span>
                         </div>
                     </div>
                 </div>
-                <img className="image-17-icon" alt="" src="./public/image-17@2x.png" />
+                <img className="image-17-icon" alt="" src="/image-17@2x.png" />
             </div>
             <div className="div13" ref={refSector2} data-scroll-to="divContainer1">
                 <div className="div14">
@@ -115,15 +114,9 @@ const Main = () => {
                         <div className="a7"><div className="books">Training</div></div>
                     </div>
                 </div>
-                <img
-                    className="mask-group-icon"
-                    alt=""
-                    src="./public/mask-group@2x.png"
-                /><img
-                    className="image-18-icon"
-                    alt=""
-                    src="./public/image-18@2x.png"
-                /><img className="image-19-icon" alt="" src="./public/image-19@2x.png" />
+                <img className="mask-group-icon" alt="" src="/mask-group@2x.png"/>
+                    <img className="image-18-icon" alt="" src="/image-18@2x.png"/>
+                    <img className="image-19-icon" alt="" src="/image-19@2x.png" />
 
                 <div className="div15"></div>
                 <div className="foot">
@@ -134,8 +127,8 @@ const Main = () => {
                         <div className="impressum">Impressum</div>
                         <div className="copyright-2023">Copyright © 2023 Elnity</div>
                         <div className="ul1">
-                            <img className="a-icon" alt="" src="./public/a.svg" /><img className="a-icon" alt="" src="./public/a1.svg" />
-                            <img className="a-icon2" alt="" src="./public/a2.svg" /><img className="a-icon" alt="" src="./public/a3.svg" />
+                            <img className="a-icon" alt="" src="/a.svg" /><img className="a-icon" alt="" src="/a1.svg" />
+                            <img className="a-icon2" alt="" src="/a2.svg" /><img className="a-icon" alt="" src="/a3.svg" />
                         </div>
                     </div>
                 </div>
@@ -145,4 +138,4 @@ const Main = () => {
 
 }
 
-export default Main
+export default Landing

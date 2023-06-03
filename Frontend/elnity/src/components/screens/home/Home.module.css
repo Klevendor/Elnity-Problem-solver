@@ -1,0 +1,28 @@
+.main_page {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    text-align: left;
+    font-size: var(--text-size);
+    color: var(--color-white);
+    font-family: var(--main-test);
+    background-image: url("/main-background-image@2x.png");
+    background-size: cover;
+    min-width: 1280px;
+  }
+
+.overlay_bg_colors{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #4f46e5,
+    rgba(134, 136, 186, 0.33) 50.56%,
+    rgba(22, 28, 45, 0.96)
+  );
+  min-width: 1280px;
+}
+

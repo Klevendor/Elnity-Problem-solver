@@ -1,0 +1,30 @@
+.main_apps{
+    margin-top: 6vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 1280px;
+}
+
+.sidebar_container{
+    display: flex;
+    width: 7vw;
+    height: 80vh;
+    border-radius: var(--br-6xl);
+    background-color: white;
+    min-width: 100px;
+    margin-left: 30px;
+}
+
+.app_container{
+    display: flex;
+    width: 84vw;
+    height: 80vh;
+    border-radius: var(--br-6xl);
+    background-color: white;
+    opacity: 0.4;
+    min-width: 1100px;
+    margin-right: 3vw;
+}
+

@@ -124,23 +124,21 @@ namespace ElnityServerBLL.Services.Implementation
             return new AuthenticationResponse { InfoMessages = "UserName already exist" };
         }
 
-        public async Task<ShortAuthenticationResponse> RefreshTokenAsync(string token,string ipAddress)
+        public async Task<RefreshDataResponse> RefreshTokenAsync(string token, string ipAddress)
         {
             var user = getUserByRefreshToken(token);
 
             if (user == null)
-                return new ShortAuthenticationResponse
+                return new RefreshDataResponse
                 {
-                    IsAuthenticated = false,
                     InfoMessages = "Invalid token"
                 };
 
-            var refreshToken = user.RefreshTokens.Single(x => x.Token == token);
+            var refreshToken = user.RefreshTokens.SingleOrDefault(x => x.Token == token);
 
             if (!refreshToken.IsActive)
-                return new ShortAuthenticationResponse
+                return new RefreshDataResponse
                 {
-                    IsAuthenticated = false,
                     InfoMessages = "Invalid token"
                 };
 
@@ -148,7 +146,7 @@ namespace ElnityServerBLL.Services.Implementation
 
             var newRefreshToken = _jwtUtilities.GenerateRefreshToken(ipAddress);
             user.RefreshTokens.Add(newRefreshToken);
-            
+
             removeOldRefreshTokens(user);
 
             _aplicationDbContext.Update(user);
@@ -156,11 +154,14 @@ namespace ElnityServerBLL.Services.Implementation
 
             var jwtToken = await _jwtUtilities.GenerateJwtTokenAsync(user);
 
-            return new ShortAuthenticationResponse
+            var roles = await _userManager.GetRolesAsync(user).ConfigureAwait(false);
+
+            return new RefreshDataResponse
             {
-                IsAuthenticated = true,
                 InfoMessages = "Ok",
                 Token = jwtToken,
+                Email = user.Email,
+                Roles = roles.ToList(),
                 RefreshToken = newRefreshToken.Token,
                 RefreshTokenExpiration = newRefreshToken.Expires
             };
@@ -187,11 +188,6 @@ namespace ElnityServerBLL.Services.Implementation
         public async Task<ApplicationUser> GetByUserName(string userName)
         {
             return await _userManager.FindByNameAsync(userName);
-        }
-
-        public Task Logout()
-        {
-            throw new NotImplementedException();
         }
 
         /* 

@@ -79,11 +79,11 @@ namespace ElnityServer.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("refresh-token")]
-        public async Task<ActionResult> RefreshToken()
+        [HttpGet("refresh-token")]
+        public async Task<ActionResult<RefreshDataResponse>> RefreshToken()
         {
             var refreshToken = Request.Cookies["refreshToken"];
-            var response = await _authService.RefreshTokenAsync(refreshToken,ipAddress());
+            var response = await _authService.RefreshTokenAsync(refreshToken, ipAddress());
             if (string.IsNullOrEmpty(response.RefreshToken))
                 return BadRequest(response);
 
@@ -91,7 +91,7 @@ namespace ElnityServer.Controllers
             return Ok(response);
         }
 
-        [Authorize("Administrator,User")]
+        [Authorize("Administrator")]
         [HttpPost("revoke-token")]
         public async Task<ActionResult> RevokeToken([FromBody] RevokeTokenRequest tokenModel)
         {
@@ -102,6 +102,15 @@ namespace ElnityServer.Controllers
 
             await _authService.RevokeTokenAsync(token, ipAddress());
             return Ok(new { message = "Token revoked" });
+        }
+
+
+        [Authorize]
+        [HttpGet("logout")]
+        public ActionResult Logout()
+        {
+            clearTokenCookie();
+            return Ok();
         }
 
         /* 
@@ -115,11 +124,24 @@ namespace ElnityServer.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(7),
+                SameSite = SameSiteMode.None,
+                Secure = true
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
 
+        private void clearTokenCookie()
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(-1d),
+                SameSite = SameSiteMode.None,
+                Secure = true
+            };
+            Response.Cookies.Append("refreshToken", "", cookieOptions);
+        }
 
         private string ipAddress()
         {

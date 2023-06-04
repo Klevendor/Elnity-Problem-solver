@@ -1,6 +1,8 @@
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_\s]{2,30}$/;
 const PASSWORD_REGEX = /[\w#$%!? \p{L}]{6,20}/u;
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/u;
+const PHONE_REGEX = /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/
+
 
 export const ValidationService = {
      validateUserName(username){
@@ -14,4 +16,8 @@ export const ValidationService = {
      validateEmail(email){
         return EMAIL_REGEX.test(email)
      },
+
+     validateNumber(number){
+      return PHONE_REGEX.test(number)
+   }
 }

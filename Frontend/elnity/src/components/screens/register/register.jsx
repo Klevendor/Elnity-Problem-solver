@@ -9,6 +9,7 @@ const API_URL = "/auth/register"
 const Register = () => {
     const navigate = useNavigate();
 
+    const [isLoading,setLoading] = useState(false);
     const [error,setError] = useState('')
     const [username,setUserName] = useState('')
     const [email,setEmail] = useState('')
@@ -38,6 +39,7 @@ const Register = () => {
             setError("Verify password wrong")
             return
         }
+        setLoading(true)
         const response = await axios.post(API_URL,
             JSON.stringify({
                 userName: username,
@@ -47,6 +49,7 @@ const Register = () => {
             {
                 headers: {'Content-Type':'application/json'}
             }).catch((err) =>{
+                setLoading(false)
                 if(!err?.response){
                     setError("Server not responding")
                 } else if (err.response?.status === 422) {
@@ -55,6 +58,7 @@ const Register = () => {
                     setError("Server error")
                 }
             })
+            setLoading(false)
             if(response?.status === 200)
             {
                 console.log(response?.data)

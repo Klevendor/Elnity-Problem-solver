@@ -7,11 +7,13 @@ using ElnityServerDAL.Constant;
 using ElnityServerDAL.Context;
 using ElnityServerDAL.Entities.Identity;
 using ElnityServerDAL.Entities.Security;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Net;
-
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ElnityServerBLL.Services.Implementation
 {
@@ -29,19 +31,26 @@ namespace ElnityServerBLL.Services.Implementation
 
         private readonly AppSettings _appSettings;
 
+        private readonly AppEnvironment _appEnvironment;
+
+        private readonly string BaseWorkPath = "/Store/";
+
+
         public AuthService(ApplicationDbContext aplicationDbContext, 
                               UserManager<ApplicationUser> userManager,
                               SignInManager<ApplicationUser> signInManager, 
                               RoleManager<IdentityRole<Guid>> roleManager,
                               IOptions<AppSettings> appSettings,
                               IJwtUtilities jwtUtilities,
-                              IMapper mapper)
+                              IMapper mapper,
+                              IOptions<AppEnvironment> appEnvironment)
         {
             _aplicationDbContext = aplicationDbContext;
             _userManager = userManager;
             _jwtUtilities = jwtUtilities;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _appEnvironment = appEnvironment.Value;
         }
 
         public async Task<AuthenticationResponse> LoginAsync(LoginRequest user, string ipAddress)
@@ -110,6 +119,14 @@ namespace ElnityServerBLL.Services.Implementation
 
                         if (resFindUserAfterRegister != null)
                         {
+                            var basePath = GenerateBasicFileStructure(resFindUserAfterRegister.Id.ToString());
+                            var defaultAvatarPath ="/Store/Default/default-avatar.png";
+
+                            resFindUserAfterRegister.BaseRoot = basePath;
+                            resFindUserAfterRegister.AvatarPath = defaultAvatarPath;
+
+                            await _aplicationDbContext.SaveChangesAsync();
+
                             var userResponse = _mapper.Map<AuthenticationResponse>(resFindUserAfterRegister);
                             userResponse.InfoMessages = "Ok";
                             userResponse.UserRoles = resUserRoles;
@@ -190,6 +207,64 @@ namespace ElnityServerBLL.Services.Implementation
             return await _userManager.FindByNameAsync(userName);
         }
 
+        public async Task<UserDataResponse> GetUserInfo(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+                return new UserDataResponse() {};
+
+            return new UserDataResponse()
+            {
+                Username = user.UserName,
+                FullName = user.FullName,
+                AvatarPath = user.AvatarPath,
+                Number = user.MyNumber,
+                Birthday = user.Birthday
+            };
+        }
+
+        public async Task<bool> ChangeUserInfo(ChangeUserInfoRequest reqParams)
+        {
+            var user = await _userManager.FindByEmailAsync(reqParams.Email);
+
+            if (user == null)
+                return false;
+
+            if (reqParams.Image != null){
+                var imagePath = await UploadImage(reqParams.Image, user.BaseRoot);
+                user.AvatarPath = imagePath;
+            }
+            
+
+
+            if (user.UserName!= reqParams.Username)
+            {
+                var check = await _userManager.FindByNameAsync(reqParams.Username);
+                if(check ==null)
+                {
+                    user.UserName = reqParams.Username;
+                    user.NormalizedUserName = reqParams.Username.ToUpper();
+                }
+                   
+                       
+            }
+                
+            
+            if (user.FullName != reqParams.FullName)
+                user.FullName = reqParams.FullName;
+
+            if (user.MyNumber != reqParams.Number)
+                user.MyNumber = reqParams.Number;
+
+            if(reqParams.Birthday!=null)
+                user.Birthday = reqParams.Birthday?.ToUniversalTime();
+
+            await _aplicationDbContext.SaveChangesAsync();
+
+            return true;
+        }
+
         /* 
          
         Methods for help
@@ -213,6 +288,44 @@ namespace ElnityServerBLL.Services.Implementation
             user.RefreshTokens.RemoveAll(x =>
                 !x.IsActive &&
                 x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        }
+
+        private string GenerateBasicFileStructure(string userName)
+        {
+            var generatedFolderName = "User_" + GenerateHashedName(userName);
+            var pathRoot = Path.GetFullPath(_appEnvironment.WebRootPath + BaseWorkPath + generatedFolderName);
+            Directory.CreateDirectory(pathRoot);
+
+            return BaseWorkPath + generatedFolderName;
+        }
+
+        private string GenerateHashedName(string input)
+        {
+            using (var md5 = MD5.Create())
+            {
+                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+                byte[] hashBytes = md5.ComputeHash(inputBytes);
+                var fileName = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+                return fileName;
+            }
+        }
+
+        private async Task<string> UploadImage(IFormFile image, string rootOfUser)
+        {
+            if (image != null && image.Length > 0)
+            {
+                var pathResources = Path.GetFullPath(_appEnvironment.WebRootPath + Path.Combine(rootOfUser));
+
+                var generatedFileName = GenerateHashedName(image.FileName) + Path.GetExtension(image.FileName);
+                var imagePath = Path.GetFullPath(_appEnvironment.WebRootPath + Path.Combine(rootOfUser, generatedFileName));
+                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(fileStream);
+                }
+                imagePath = rootOfUser + "/" + generatedFileName;
+                return imagePath;
+            }
+            return "";
         }
     }
 }

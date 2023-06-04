@@ -113,6 +113,22 @@ namespace ElnityServer.Controllers
             return Ok();
         }
 
+
+        [Authorize]
+        [HttpPost("get-user-info")]
+        public async Task<ActionResult<UserDataResponse>> GetUserInfo(GetUserInfoRequest reqParmas)
+        {
+            var res = await _authService.GetUserInfo(reqParmas.Email);
+            return Ok(res);
+        }
+
+        [Authorize]
+        [HttpPost("change-user-info")]
+        public async Task<ActionResult<bool>> ChangeUserInfo([FromForm] ChangeUserInfoRequest reqParmas)
+        {
+            var res = await _authService.ChangeUserInfo(reqParmas);
+            return Ok(res);
+        }
         /* 
 
         Methods for help

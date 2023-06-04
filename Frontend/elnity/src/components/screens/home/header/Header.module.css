@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .logo_image{
@@ -67,4 +68,76 @@
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
+}
+
+
+/* Dialog */
+
+.popup_menu{
+  position: absolute;
+  width: 200px;
+  height: 145px;
+  top: 80px;
+  right: 50px;
+  background-color: var(--color-white);
+  border-radius: var(--br-6xl);
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar_popup{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 20px;
+}
+
+.user_info_container{
+  width: 190px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  color: black;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.username_label{
+  margin: 0;
+  min-width: 110px;
+  max-height: 40px;
+  font-size: 14px;
+  margin-left: 10px;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buttons_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  width: 190px;
+  cursor: pointer;
+}
+
+.profile{
+  width: 25px;
+  height: 25px;
+  object-fit: cover;
+}
+
+.profile_text{
+  margin-left: 10px;
+  color: black;
+  font-size: 18px;
+}
+
+.dialog_none{
+  display: none;
 }

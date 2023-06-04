@@ -100,6 +100,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddAutoMapper(typeof(UserProfile));
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<AppEnvironment>(options =>
+{
+    options.WebRootPath = builder.Environment.WebRootPath;
+});
 
 builder.Services.AddScoped<IJwtUtilities, JwtUtilities>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -124,5 +128,7 @@ app.UseAuthorization();
 
 app.UseMiddleware<JwtMiddleware>();
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.Run();

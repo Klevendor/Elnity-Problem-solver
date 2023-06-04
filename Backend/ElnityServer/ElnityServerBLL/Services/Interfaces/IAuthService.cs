@@ -14,5 +14,9 @@ namespace ElnityServerBLL.Services.Interfaces
         public Task<ApplicationUser> GetByUserName(string userName);
         public Task RevokeTokenAsync(string token, string ipAddress);
         public UserManager<ApplicationUser> _userManager { get; }
+        public Task<UserDataResponse> GetUserInfo(string email);
+        public Task<bool> ChangeUserInfo(ChangeUserInfoRequest reqParams);
+
+
     }
 }

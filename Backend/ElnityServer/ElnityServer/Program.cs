@@ -107,6 +107,8 @@ builder.Services.Configure<AppEnvironment>(options =>
 
 builder.Services.AddScoped<IJwtUtilities, JwtUtilities>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAppsService, AppService>();
+
 
 var app = builder.Build();
 

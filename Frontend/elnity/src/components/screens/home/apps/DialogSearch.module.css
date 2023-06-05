@@ -104,25 +104,8 @@
     
 }
 
-
-.app_with_label_container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.app2{
-    background-color: brown;
-    width: 70px;
-    height: 70px;
-    min-height: 70px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.app_title{
-    font-size: 16;
-    margin: 0;
-    margin-top: 10px;
+.app_not_found{
+    margin-top: 120px;
+    font-size: 25px;
+    font-weight: 500;
 }

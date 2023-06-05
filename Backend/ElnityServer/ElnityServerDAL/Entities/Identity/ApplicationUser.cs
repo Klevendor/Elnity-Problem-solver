@@ -1,4 +1,5 @@
-﻿using ElnityServerDAL.Entities.Security;
+﻿using ElnityServerDAL.Entities.App;
+using ElnityServerDAL.Entities.Security;
 using Microsoft.AspNetCore.Identity;
 
 namespace ElnityServerDAL.Entities.Identity
@@ -16,5 +17,9 @@ namespace ElnityServerDAL.Entities.Identity
         public string? BaseRoot { get; set; }
 
         public List<RefreshToken> RefreshTokens { get; set; }
+
+        public List<JournalApp> JournalApps { get; set; }
+
+        public List<NoteApp> NoteAppsFilelds { get; set; }
     }
 }

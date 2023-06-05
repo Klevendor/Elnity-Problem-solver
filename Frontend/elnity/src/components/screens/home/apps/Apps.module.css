@@ -36,10 +36,10 @@
     width: 84vw;
     height: 80vh;
     border-radius: var(--br-6xl);
-    background-color: white;
-    opacity: 0.4;
     min-width: 1100px;
     margin-right: 3vw;
+    align-items: center;
+    justify-content: center;
 }
 
 .apps_container{
@@ -49,10 +49,28 @@
     min-height:  460px;
     overflow: auto;
     flex-direction: column;
-    padding: 5px;
+    margin-right: 8px;
     gap: 20px;
 }
 
+.hello_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #4f46e5;
+    margin-bottom: 60px;
+}
+
+.title_hello{
+    font-size:45px;
+    font-weight: 600;
+}
+
+.subtitle_hello{
+    font-size: var(--text-size);
+    font-weight: 500;
+}
 
 
 .app{

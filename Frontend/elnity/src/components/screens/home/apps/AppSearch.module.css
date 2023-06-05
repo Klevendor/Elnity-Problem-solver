@@ -1,0 +1,35 @@
+
+
+.app_with_label_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.app_container{
+    background-color: grey;
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.img_app{
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.app_title{
+    color: black;
+    font-size: 16px;
+    margin: 0;
+    margin-top: 8px;
+    max-width: 120px;
+    word-wrap: break-word;
+}

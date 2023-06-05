@@ -1,6 +1,26 @@
+import { useEffect, useState } from "react";
+import AppSearch from "./AppSearch";
 import styles from "./DialogSearch.module.css";
 
-const DialogSearch = ({refDialog}) =>{
+const DialogSearch = ({refDialog,data}) =>{
+    
+    const [appsData, setAppsData] = useState([])
+    const [filterName,setFilterName] = useState("")
+    const [filteredData,setFilteredData] = useState([])
+
+    useEffect(() => {
+        if (filterName === "") {
+            setFilteredData(appsData)
+        }
+        else {
+            setFilteredData(appsData.filter((app) => { return app.name.indexOf(filterName) !== -1 }))
+        }
+    }, [filterName])
+
+    useEffect(()=>{
+        setAppsData(data)
+        setFilteredData(data)
+    },[data])
 
     return  <dialog ref={refDialog} className={styles.modal}>
     <div className={styles.center}>
@@ -10,23 +30,23 @@ const DialogSearch = ({refDialog}) =>{
             </div>
             <div className={styles.search_panel}>
                 <div className={styles.search_container}>
-                    <input type="text" name="" id="" className={styles.search}/>
+                    <input type="text" name="" id="" className={styles.search}
+                    value={filterName} onChange={(e)=> setFilterName(e.target.value)}/>
                     <div className={styles.loop}>
                         <i className="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
             </div>
-            <div className={styles.search_apps_container}>
-                <div className={styles.app_with_label_container}>
-                    <div className={styles.app2}>
-                    fd
+            {filteredData?.length == 0
+                    ? <div className={styles.app_not_found}>
+                        No application found
+                        </div>
+                    : <div className={styles.search_apps_container}>
+                    {
+                        filteredData?.map((app) => <AppSearch key={app.id} appData={app}/>)
+                    }
                     </div>
-                    <p className={styles.app_title}>test</p>
-                </div>
-               
-                
-                    
-                </div>
+            }
         </div>
     </div>
 </dialog>

@@ -3,7 +3,7 @@ import useAuth from "../../../hooks/useAuth"
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate"
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { UserService } from "../../../services/UserService";
+import userStore from "./../../../hooks/useStore"
 
 const Header = ({data}) => {
     const navigate = useNavigate()
@@ -16,11 +16,11 @@ const Header = ({data}) => {
 
     const [username,setUsername] = useState("")
     const [imagePath,setImagePath] = useState("/default-avatar.png")
+    const {appHeader} = userStore()
 
     useEffect(()=>{
         setUsername(data?.username)
         setImagePath(data?.avatarPath)
-        console.log(data)
     },[])
 
     const Logout = async () =>{
@@ -48,7 +48,7 @@ const Header = ({data}) => {
 
     return <div className={styles.header}>
         <div className={styles.menu_container}>
-            menu
+            {appHeader}
         </div>
         <div className={styles.logo_container}>
             <div className={styles.logo_container}>

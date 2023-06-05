@@ -264,7 +264,6 @@ namespace ElnityServerBLL.Services.Implementation
 
             return true;
         }
-
         /* 
          
         Methods for help

@@ -6,7 +6,7 @@ import { UserService } from "../../../services/UserService";
 import { axiosPrivate } from "../../../api/Axios";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useAuth from "../../../hooks/useAuth";
-
+import useStore from "../../../hooks/useStore";
 
 const Profile = ({data,updateData}) => {
     const navigate = useNavigate()
@@ -21,11 +21,14 @@ const Profile = ({data,updateData}) => {
     const [date,setDate] = useState("")
     const [imagePath,setImagePath] = useState("/default-avatar.png")
 
+    const {appHeader,setAppHeader} = useStore()
+
     const saveFileSelected = (e) => {
         setFileSelected(e.target.files[0]);
     };
 
     useEffect(()=>{
+        setAppHeader("Profile")
         setUsername(data?.username)
         setFullName(data?.fullName?data.fullName : "" )
         setNumber(data?.number?data.number : "" )

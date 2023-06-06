@@ -7,6 +7,7 @@ import useAuth from "../../../hooks/useAuth";
 import SidebarApp from "./SidebarApp";
 import useStore from "../../../hooks/useStore";
 import { Routes,Route } from "react-router-dom";
+import NoteAggregator from "./functional/NoteAggregator";
 
 const Apps = () => {
     const ref = useRef()
@@ -43,7 +44,7 @@ const Apps = () => {
 
             <div className={styles.apps_container}>
                 {userApps?.map((app) =>
-                        <SidebarApp appData={app}/>
+                    <SidebarApp key={app.id} appData={app}/>
                 )}
             </div>
             <div className={styles.add_app_container}>
@@ -59,7 +60,7 @@ const Apps = () => {
                         life
                     </div>
                 </div>}/>
-                <Route path="app/:id" element={<div>Hello wordl</div>}/>
+                <Route path="app/:id" element={<NoteAggregator/>}/>
             </Routes>
         </div>
         <DialogSearch refDialog={ref} data={allApps}/>

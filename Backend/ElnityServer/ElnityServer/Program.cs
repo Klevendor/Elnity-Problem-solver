@@ -108,7 +108,7 @@ builder.Services.Configure<AppEnvironment>(options =>
 builder.Services.AddScoped<IJwtUtilities, JwtUtilities>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAppsService, AppService>();
-
+builder.Services.AddScoped<INoteAggregator, NoteAggregator>();
 
 var app = builder.Build();
 

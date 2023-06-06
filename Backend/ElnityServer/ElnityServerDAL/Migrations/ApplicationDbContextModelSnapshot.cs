@@ -22,6 +22,87 @@ namespace ElnityServerDAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.App", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("InDevelop")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Apps");
+                });
+
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.JournalApp", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AppId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("JournalUserApps");
+                });
+
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.NoteApp", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CurrentState")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NoteAppUserFields");
+                });
+
             modelBuilder.Entity("ElnityServerDAL.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -30,6 +111,15 @@ namespace ElnityServerDAL.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("AvatarPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BaseRoot")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -42,11 +132,17 @@ namespace ElnityServerDAL.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("MyNumber")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -217,6 +313,36 @@ namespace ElnityServerDAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.JournalApp", b =>
+                {
+                    b.HasOne("ElnityServerDAL.Entities.App.App", "App")
+                        .WithMany("Apps")
+                        .HasForeignKey("AppId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ElnityServerDAL.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("JournalApps")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("App");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.NoteApp", b =>
+                {
+                    b.HasOne("ElnityServerDAL.Entities.Identity.ApplicationUser", "User")
+                        .WithMany("NoteAppsFilelds")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ElnityServerDAL.Entities.Identity.ApplicationUser", b =>
                 {
                     b.OwnsMany("ElnityServerDAL.Entities.Security.RefreshToken", "RefreshTokens", b1 =>
@@ -308,6 +434,18 @@ namespace ElnityServerDAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ElnityServerDAL.Entities.App.App", b =>
+                {
+                    b.Navigation("Apps");
+                });
+
+            modelBuilder.Entity("ElnityServerDAL.Entities.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("JournalApps");
+
+                    b.Navigation("NoteAppsFilelds");
                 });
 #pragma warning restore 612, 618
         }

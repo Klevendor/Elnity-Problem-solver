@@ -1,0 +1,132 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: 100%;
+    width: 100%;
+}
+
+.modal {
+    position: fixed;
+    padding: 0;
+    top: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    border: 0;
+}
+
+.modal_container {
+    margin-top: 30vh;
+    width: 40vw;
+    height: 26vh;
+    min-width: 450px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    min-height: 240px;
+    gap: 5vh;
+}
+
+.control_panel {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    justify-content:space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.title{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.close {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #4f46e5;
+}
+
+.message_panel{
+    max-width: 80%;
+    text-align: center;
+}
+
+.message{
+    font-size: 20px;
+    margin: 0;
+}
+
+.action_panel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+.no_button{
+    width: 10vw;
+    min-width: 120px;
+    height: 5vh;
+    color: white;
+    background-color: #4f46e5;
+    border: 1px solid #4f46e5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.yes_button{
+    width: 10vw;
+    min-width: 120px;
+    height: 5vh;
+    background-color: white;
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.yes_button:hover{
+    background-color: #b9002b;
+    border: 1px solid #b9002b;
+    color: white;
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #4f46e5;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media (max-width: 1647px) {
+    .modal_container {
+        min-height: 270px;
+    }
+}

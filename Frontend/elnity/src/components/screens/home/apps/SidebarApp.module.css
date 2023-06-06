@@ -1,0 +1,17 @@
+.img_container{
+    background-color: grey;
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.img_app{
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    border-radius: 20px;
+    object-fit: cover;
+}

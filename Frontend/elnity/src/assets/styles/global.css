@@ -1,0 +1,94 @@
+html, body {
+	height:100%;
+	width:100%;
+    }
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-roboto: Roboto;
+  --main-test: Poppins;
+
+  /* font sizes */
+  --font-size-sm: 14px;
+  --font-size-lgi: 19px;
+  --text-size: 20px;
+  --font-size-base: 16px;
+  --main-test-size: 48px;
+  --font-size-16xl: 35px;
+  --font-size-41xl: 60px;
+  --font-size-lg: 18px;
+  --font-size-6xl: 25px;
+  --font-size-xs: 12px;
+
+  /* Colors */
+  --color-white: #fff;
+  --light: #e5e7eb;
+  --color-gainsboro-100: #d9d9d9;
+  --color-gainsboro-200: rgba(229, 231, 235, 0.33);
+  --color-gainsboro-300: rgba(217, 217, 217, 0.51);
+  --color-darkslategray-100: #42526e;
+  --color-lavender: #deebff;
+  --button: #4f46e5;
+  --color-gray-100: #161c2d;
+  --color-gray-200: rgba(255, 255, 255, 0.35);
+  --color-whitesmoke-100: #f4f5f7;
+  --color-royalblue: #0052cc;
+  --color-lightseagreen: #30b3b2;
+  --color-greenyellow: #8ae62e;
+  --color-indianred: #e04f5f;
+  --color-seagreen: #378b4e;
+  --color-cornflowerblue-100: #a8a1e5;
+  --color-cornflowerblue-200: #2196f3;
+  --color-darkgray: #a3a3a3;
+  --color-indigo-100: #7728a0;
+  --color-indigo-200: rgba(119, 40, 160, 0);
+  --color-goldenrod: #f7ba00;
+  --color-tomato: #f34235;
+  --color-darkslateblue: #5766ae;
+  --color-snow: #fffbfb;
+  --color-darkgoldenrod: #c4961d;
+  --color-forestgreen: #19aa31;
+  --color-steelblue: #1965aa;
+
+  /* Paddings */
+  --padding-15xl-8: 34.8px;
+  --padding-52xl-6: 71.6px;
+  --padding-16xl-2: 35.2px;
+  --padding-53xl-7: 72.7px;
+  --padding-sm: 14px;
+
+  /* border radiuses */
+  --br-mini: 15px;
+  --br-31xl: 50px;
+  --br-3xs: 10px;
+  --br-8xs: 5px;
+  --br-10xs: 3px;
+  --br-5xs: 8px;
+  --br-xl: 20px;
+  --br-9xs: 4px;
+  --br-6xl: 25px;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(243, 243, 243);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(235, 235, 235);
+}

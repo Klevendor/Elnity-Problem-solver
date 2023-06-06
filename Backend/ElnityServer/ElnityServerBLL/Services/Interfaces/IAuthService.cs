@@ -9,11 +9,14 @@ namespace ElnityServerBLL.Services.Interfaces
     {
         public Task<AuthenticationResponse> RegisterAsync(RegisterRequest user);
         public Task<AuthenticationResponse> LoginAsync(LoginRequest user, string ipAddress);
-        public Task<ShortAuthenticationResponse> RefreshTokenAsync(string token,string ipAddress);
-        public Task Logout();
+        public Task<RefreshDataResponse> RefreshTokenAsync(string token,string ipAddress);
         public Task<ApplicationUser> GetByUserId(Guid id);
         public Task<ApplicationUser> GetByUserName(string userName);
         public Task RevokeTokenAsync(string token, string ipAddress);
         public UserManager<ApplicationUser> _userManager { get; }
+        public Task<UserDataResponse> GetUserInfo(string email);
+        public Task<bool> ChangeUserInfo(ChangeUserInfoRequest reqParams);
+
+
     }
 }

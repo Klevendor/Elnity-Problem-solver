@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ElnityServerDAL\ElnityServerDAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Store\User_4d2b448786c44a57aae0adeeecbbd1b1\" />
+  </ItemGroup>
+
 </Project>

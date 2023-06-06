@@ -1,0 +1,85 @@
+.main_apps{
+    margin-top: 6vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 1280px;
+}
+
+.sidebar_container{
+    display: flex;
+    width: 7vw;
+    height: 80vh;
+    border-radius: var(--br-6xl);
+    background-color: white;
+    min-width: 100px;
+    margin-left: 30px;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.add_app_container{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.add_button{
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+}
+
+.app_container{
+    display: flex;
+    width: 84vw;
+    height: 80vh;
+    border-radius: var(--br-6xl);
+    min-width: 1100px;
+    margin-right: 3vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.apps_container{
+    display: flex;
+    margin-top: 20px;
+    height: 460px;
+    min-height:  460px;
+    overflow: auto;
+    flex-direction: column;
+    margin-right: 8px;
+    gap: 20px;
+}
+
+.hello_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #4f46e5;
+    margin-bottom: 60px;
+}
+
+.title_hello{
+    font-size:45px;
+    font-weight: 600;
+}
+
+.subtitle_hello{
+    font-size: var(--text-size);
+    font-weight: 500;
+}
+
+
+.app{
+    margin-left: 10px;
+    background-color: brown;
+    width: 70px;
+    height: 70px;
+    min-height: 70px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+

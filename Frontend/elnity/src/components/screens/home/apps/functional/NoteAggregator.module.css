@@ -49,9 +49,9 @@
     font-size: var(--font-size-base);
   }
 
-::placeholder { 
-    color: white;
-  }
+.input_search::placeholder { 
+  color: white;
+}
 
 .buttons_container{
     display: flex;

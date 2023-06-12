@@ -30,7 +30,7 @@ namespace ElnityServer.Controllers
 
         [Authorize]
         [HttpPost("get-user-notes")]
-        public async Task<ActionResult<IEnumerable<UserNoteResponse>>> AddNote(GetNoteUserRequest reqParams)
+        public async Task<ActionResult<IEnumerable<UserNoteResponse>>> GetNote(GetNoteUserRequest reqParams)
         {
             var res = await _noteAggregator.GetNoteAsync(reqParams);
             return Ok(res);

@@ -1,6 +1,6 @@
 import './LandingPage.css'
 import { useRef } from 'react';
-import {useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -121,14 +121,23 @@ const Landing = () => {
                 <div className="div15"></div>
                 <div className="foot">
                     <div className="div19"ref={refSector3} data-scroll-to="divContainer">
-                        <div className="privacy-policy">Privacy policy</div>
-                        <div className="terms">Terms</div>
-                        <div className="modern-slavery-act">Modern Slavery Act</div>
-                        <div className="impressum">Impressum</div>
-                        <div className="copyright-2023">Copyright © 2023 Elnity</div>
+                        <div className="privacy-policy">Support: elnity@ukr.net</div>
+                        <div className="terms">Copyright © 2023 Elnity</div>
+                        <div className="modern-slavery-act"></div>
+                        <div className="impressum"></div>
                         <div className="ul1">
-                            <img className="a-icon" alt="" src="/a.svg" /><img className="a-icon" alt="" src="/a1.svg" />
-                            <img className="a-icon2" alt="" src="/a2.svg" /><img className="a-icon" alt="" src="/a3.svg" />
+                            <Link to={"https://www.facebook.com/"} target='_blanck'>
+                                 <img className="a-icon" alt="" src="/a.svg"/>
+                            </Link>
+                            <Link to={"https://twitter.com/?lang=uk"} target='_blanck'>
+                                <img className="a-icon" alt="" src="/a1.svg"/>
+                            </Link>
+                            <Link to={"https://www.linkedin.com/"} target='_blanck'>
+                                <img className="a-icon2" alt="" src="/a2.svg"/>
+                            </Link>
+                            <Link to={"https://www.youtube.com/"} target='_blanck'>
+                                <img className="a-icon" alt="" src="/a3.svg"/>
+                            </Link>
                         </div>
                     </div>
                 </div>

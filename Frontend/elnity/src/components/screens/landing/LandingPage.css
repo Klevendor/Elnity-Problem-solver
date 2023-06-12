@@ -359,7 +359,7 @@
     position: relative;
     width: 100%;
     height: 600px;
-    background-image: url(./public/divteam23hero@3x.png);
+    background-image: url(/divteam23hero@3x.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
@@ -638,7 +638,7 @@
 .modern-slavery-act,
 .terms {
     left: 223.36px;
-    width: 40.01px;
+    width: 20vw;
 }
 
 .copyright-2023,
